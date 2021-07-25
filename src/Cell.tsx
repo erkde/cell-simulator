@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { useGameContext } from './useGameContext';
+
 const Wrapper = styled.div`
   background: var(--color-background);
   border: 1px solid var(--color-dark-800);
@@ -19,15 +21,14 @@ interface Style extends React.CSSProperties {
 type Props = {
   row: number;
   column: number;
-  onToggle: (row: number, column: number) => void;
-  value: number;
 };
 
-function Cell({ row, column, onToggle, value }: Props) {
-  const alive = !!value;
+function Cell({ row, column }: Props) {
+  const { state, dispatch } = useGameContext();
+  const alive = !!state[row][column];
 
-  function handleToggle(event: React.SyntheticEvent) {
-    onToggle(row, column);
+  function handleToggle(_event: React.SyntheticEvent) {
+    dispatch({ type: 'toggle', payload: { row, column }});
   }
 
   return (

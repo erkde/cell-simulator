@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { Board } from './Board';
+import { GameProvider } from './GameProvider';
 
 const Wrapper = styled.section`
   margin: 0 auto;
@@ -17,7 +18,9 @@ function App() {
   return (
     <Wrapper>
       <Title>Cell Simulator</Title>
-      <Board rows={6} columns={6} />
+      <GameProvider rows={6} columns={6}>
+        <Board />
+      </GameProvider>
     </Wrapper>
   );
 }

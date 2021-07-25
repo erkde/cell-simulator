@@ -1,29 +1,37 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 
 import { Cell } from './Cell';
+import { GameContext } from './GameContext';
 
-const onToggle = jest.fn();
+const state = [[0, 0],[1, 1]];
+const dispatch = jest.fn();
 
-test('renders a checked element', () => {
-  render(<Cell value={1} row={0} column={0} onToggle={onToggle} />);
+const wrapper: React.FC = ({ children }) => (
+  <GameContext.Provider value={{ state, dispatch }}>{children}</GameContext.Provider>
+);
+
+test('renders an checked element', () => {
+  render(<Cell row={1} column={1}/>, { wrapper });
+
   expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'true');
 });
 
 test('renders an unchecked element', () => {
-  render(<Cell value={0} row={0} column={0} onToggle={onToggle} />);
+  render(<Cell row={0} column={1}/>, { wrapper });
+
   expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'false');
 });
 
-test('invokes onToggle on click', () => {
-  render(<Cell value={0} row={1} column={2} onToggle={onToggle} />)
+test('dispatches a toggle action on click', () => {
+  render(<Cell row={1} column={1}/>, { wrapper });
 
   fireEvent.click(screen.getByRole('checkbox'));
-  expect(onToggle).toHaveBeenCalledWith(1, 2);
+  expect(dispatch).toHaveBeenCalledWith({ type: 'toggle', payload: { row: 1, column: 1 }});
 });
 
-test('invokes onToggle on key press', () => {
-  render(<Cell value={0} row={3} column={4} onToggle={onToggle} />)
+test('dispatches a toggle action on key press', () => {
+  render(<Cell row={1} column={1}/>, { wrapper });
 
   fireEvent.keyPress(screen.getByRole('checkbox'), { key: 'Enter', keyCode: 13 });
-  expect(onToggle).toHaveBeenCalledWith(3, 4);
+  expect(dispatch).toHaveBeenCalledWith({ type: 'toggle', payload: { row: 1, column: 1 }});
 });
