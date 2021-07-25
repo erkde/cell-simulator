@@ -19,10 +19,21 @@ interface Style extends React.CSSProperties {
 };
 
 function Board({ rows, columns }: Props) {
-  const state: number[][] = React.useMemo(() => 
+  const initialState: number[][] = React.useMemo(() =>
     [ ...Array(rows) ].map(_ => Array(columns).fill(0)), 
     [rows, columns]
   );
+
+  const [state, setState] = React.useState(initialState);
+
+  function handleToggle(row: number, column: number) {
+    setState(currentState => {
+      const nextState = currentState.map(row => row.slice());
+      nextState[row][column] = currentState[row][column] ? 0 : 1;
+
+      return nextState;
+    });
+  }
 
   return (
     <Wrapper
@@ -30,9 +41,13 @@ function Board({ rows, columns }: Props) {
         '--column-count': columns
       } as Style}
     >
-      {state.map((row, rowIndex) => row.map((_, columnIndex) => (
+      {state.map((row, rowIndex) => row.map((cell, columnIndex) => (
         <Cell
           key={`row:${rowIndex}:column:${columnIndex}`}
+          row={rowIndex}
+          column={columnIndex}
+          onToggle={handleToggle}
+          value={cell}
         />
       )))}
     </Wrapper>
