@@ -30,6 +30,7 @@ function App() {
       <GameProvider rows={6} columns={6}>
         <Board />
         <ButtonGroup>
+          <Button action={{ type: "next"}}>Next</Button>
           <Button action={{ type: 'reset'}}>Reset</Button>
         </ButtonGroup>
       </GameProvider>
