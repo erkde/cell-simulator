@@ -12,6 +12,7 @@ type State = number[][];
 
 type Action =
   | { type: 'toggle', payload: Location }
+  | { type: 'reset' }
 
 function initialize({ rows, columns }: Dimensions): State {
   return [ ...Array(rows) ].map(_ => Array(columns).fill(0));
@@ -26,6 +27,13 @@ function reducer(state: State, action: Action): State {
       nextState[row][column] = state[row][column] ? 0 : 1;
       
       return nextState;
+    }
+
+    case 'reset': {
+      const rows = state.length;
+      const columns = rows ? state[0].length : 0;
+
+      return initialize({ rows, columns });
     }
 
     default: {

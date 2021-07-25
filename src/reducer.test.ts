@@ -43,4 +43,11 @@ describe(reducer, () => {
       expect(state).toEqual([[0, 0], [0, 0]]);  
     });
   });
+
+  describe('action reset', () => {
+    test('sets all cells to 0', () => {
+      let state = [[1, 1], [1, 1]];
+      expect(reducer(state, { type: 'reset'})).toEqual([[0, 0], [0, 0]]);
+    });
+  });
 });
