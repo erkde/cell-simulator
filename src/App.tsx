@@ -1,6 +1,13 @@
+import styled from 'styled-components';
+
+const Title = styled.h1`
+  font-sie: 2rem;
+  line-height: 1.1;
+`;
+
 function App() {
   return (
-    <h1>Cell Simulator</h1>
+    <Title>Cell Simulator</Title>
   );
 }
 
